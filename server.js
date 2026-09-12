@@ -1,9 +1,13 @@
 const WebSocket = require('ws');
 const http = require('http');
 
-const server = http.createServer();
-const wss = new WebSocket.Server({ noServer: true });
+// This creates the server and instantly answers normal web browser visits
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('AggieCollab Backend is live and running!');
+});
 
+const wss = new WebSocket.Server({ noServer: true });
 const docs = new Map();
 
 server.on('upgrade', (request, socket, head) => {
@@ -21,7 +25,6 @@ wss.on('connection', (ws, request) => {
   
   const room = docs.get(roomName);
   room.add(ws);
-  
   console.log(`Client connected to room: ${roomName}`);
   
   ws.on('message', (message) => {
@@ -38,17 +41,7 @@ wss.on('connection', (ws, request) => {
   });
 });
 
-   const port = process.env.PORT || 1234;
-   // Add this to handle normal web browser visits and Render health checks
-server.on('request', (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('AggieCollab Backend is live and running!');
-});
-
 const port = process.env.PORT || 1234;
 server.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port}`);
 });
-   server.listen(port, '0.0.0.0', () => {
-     console.log(`Server running on port ${port}`);
-   });
