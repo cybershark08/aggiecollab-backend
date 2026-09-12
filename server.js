@@ -39,6 +39,16 @@ wss.on('connection', (ws, request) => {
 });
 
    const port = process.env.PORT || 1234;
+   // Add this to handle normal web browser visits and Render health checks
+server.on('request', (req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('AggieCollab Backend is live and running!');
+});
+
+const port = process.env.PORT || 1234;
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
+});
    server.listen(port, '0.0.0.0', () => {
      console.log(`Server running on port ${port}`);
    });
