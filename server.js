@@ -38,6 +38,7 @@ wss.on('connection', (ws, request) => {
   });
 });
 
-server.listen(1234, () => {
-  console.log('Server running on port 1234');
-});
+   const port = process.env.PORT || 1234;
+   server.listen(port, '0.0.0.0', () => {
+     console.log(`Server running on port ${port}`);
+   });
